@@ -1,0 +1,11 @@
+.wrapper{
+    display: grid;
+    grid-template-columns:60% 40%;
+    grid-gap:1em;
+    grid-auto-rows: minmax(100px,auto);
+}
+.DivDecor{
+    margin: 3em;
+    padding: 1em;
+    border: 1px solid black;
+}

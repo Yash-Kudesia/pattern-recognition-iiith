@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Data Clustering</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="Libraries/index.css">
+    <link rel="stylesheet" type="text/css" href="Libraries/toggle.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script type="text/javascript" src="Libraries/data.js"></script>
+    <script type="text/javascript" src="Libraries/index.js"></script>
+</head>
+
+<body onload="InitLoad()">
+    <div class="wrapper">
+        <div id="graph">
+
+        </div>
+        <div id="options">
+            <div class="DivDecor">
+                Load Custom Data Sets<br>
+                Class 1
+                <select id="traceSelect">
+                    <option value="L1">L1</option>
+                    <option value="L2">L2</option>
+                    <option value="L3">L3</option>
+                    <option value="L4">L4</option>
+                </select>
+                <button id="load" onclick="loadRandomTraces()">Load</button>
+            </div>
+            <div class="DivDecor">
+                Mark Points<br>
+                TestPoints
+                <label class="switch">
+                    <input id="TestPoints" type="checkbox">
+                    <span class="slider"></span>
+                </label>
+                <button id="clear">Clear</button>
+            </div>
+            <div class="DivDecor">
+                Classification DDAG <br>
+                <button id="start" onclick="startIteration()">Start</button>
+                <button id="next" onclick="nextIteration()">Next</button>
+                <button id="finish" onclick="finishIteration()">Finish</button><br>
+                Current Classifier :<div id="classifier"></div>
+                Current Class : <div id="class"></div>
+            </div>
+        </div>
+    </div>
+    <div class="className">
+        Class1 Class2 Class3 Class4 Test
+    </div>
+</body>
+
+</html>
