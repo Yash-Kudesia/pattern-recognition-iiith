@@ -265,7 +265,7 @@ function makeTraces() {
     return data;
 }
 var count_Iteration = 0;
-function startIteration() {
+function KMeans_startIteration() {
     console.log("Start iteration");
     makeobjects();
     kMeans(0);
@@ -275,7 +275,7 @@ function startIteration() {
     var data = makeTraces();
     plotGraphData(data);
 }
-function nextIteration() {
+function KMeans_nextIteration() {
     console.log("Next iteration");
     if (K == Points.length) {
         alert("Iterations completed");
@@ -293,14 +293,14 @@ function nextIteration() {
         }
     }
 }
-function finishIteration() {
+function KMeans_finishIteration() {
     console.log("Finish iteration");
     if (K == Points.length) {
         alert("Iterations completed");
     }
     else {
         var state = 0;
-        if(count_Iteration==-1){
+        if (count_Iteration == -1) {
             console.log("Process already finished");
         }
         while (state == 0) {
@@ -311,8 +311,44 @@ function finishIteration() {
             plotGraphData(data);
         }
         if (state !== 0) {
-            count_Iteration=-1;
+            count_Iteration = -1;
             console.log("No more iteration possible");
         }
+    }
+}
+function MST_startIteration() {
+
+}
+function MST_nextIteration() {
+
+}
+function MST_finishIteration() {
+
+}
+function startIteration() {
+    var t = document.getElementById("algoSelect").value;
+    if (t == "kmeans") {
+        KMeans_startIteration();
+    }
+    else {
+        MST_startIteration();
+    }
+}
+function nextIteration() {
+    var t = document.getElementById("algoSelect").value;
+    if (t == "kmeans") {
+        KMeans_nextIteration();
+    }
+    else {
+        MST_nextIteration();
+    }
+}
+function finishIteration() {
+    var t = document.getElementById("algoSelect").value;
+    if (t == "kmeans") {
+        KMeans_finishIteration();
+    }
+    else {
+        MST_finishIteration();
     }
 }

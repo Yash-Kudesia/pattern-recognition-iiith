@@ -4,11 +4,11 @@
 <head>
     <title>Data Clustering</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="Libraries/index.css">
-    <link rel="stylesheet" type="text/css" href="Libraries/toggle.css">
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <link rel="stylesheet" type="text/css" href="toggle.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script type="text/javascript" src="Libraries/data.js"></script>
-    <script type="text/javascript" src="Libraries/index.js"></script>
+    <script type="text/javascript" src="data.js"></script>
+    <script type="text/javascript" src="index.js"></script>
 </head>
 
 <body onload="InitLoad()">
@@ -17,6 +17,12 @@
 
         </div>
         <div id="options">
+            <div class="DivDecor">
+                <select id="algoSelect">
+                    <option value="Kmeans">K Means</option>
+                    <option value="MST">MST</option>
+                </select>
+            </div>
             <div class="DivDecor">
                 Load Custom Data Sets<br>
                 Class 1
