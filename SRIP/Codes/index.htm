@@ -4,6 +4,7 @@
 <head>
     <title>Data Clustering</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="index.css">
     <link rel="stylesheet" type="text/css" href="toggle.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -13,7 +14,7 @@
 
 <body onload="InitLoad()">
     <div class="wrapper">
-        <div id="graph">
+        <div id="graph" style="cursor: default;">
 
         </div>
         <div id="options">
@@ -21,35 +22,35 @@
                 <select id="algoSelect">
                     <option value="Kmeans">K Means</option>
                     <option value="MST">MST</option>
-                </select>
+                </select><br>
+               <textarea name="coordinates" id="X" readonly></textarea><br>
+               <textarea name="coordinates" id="Y" readonly></textarea>
             </div>
             <div class="DivDecor">
-                Load Custom Data Sets<br>
-                Class 1
+
+                <h4>Load Custom Data Sets</h4><br>
                 <select id="traceSelect">
-                    <option value="L1">L1</option>
-                    <option value="L2">L2</option>
-                    <option value="L3">L3</option>
-                    <option value="L4">L4</option>
+                    <option value="1">L1</option>
+                    <option value="2">L2</option>
+                    <option value="3">L3</option>
+                    <option value="4">L4</option>
                 </select>
                 <button id="load" onclick="loadRandomTraces()">Load</button>
             </div>
             <div class="DivDecor">
-                Mark Points<br>
-                TestPoints
+                <h4>Mark Points</h4><br>
+                TestPoints<br>
                 <label class="switch">
                     <input id="TestPoints" type="checkbox">
                     <span class="slider"></span>
                 </label>
-                <button id="clear">Clear</button>
+                <button id="clear" onclick="removetestPoints()">Remove first point</button>
             </div>
             <div class="DivDecor">
-                Classification DDAG <br>
                 <button id="start" onclick="startIteration()">Start</button>
                 <button id="next" onclick="nextIteration()">Next</button>
-                <button id="finish" onclick="finishIteration()">Finish</button><br>
-                Current Classifier :<div id="classifier"></div>
-                Current Class : <div id="class"></div>
+                <button id="finish" onclick="finishIteration()">Finish</button><br><br>
+                Iteration Number : <div id="class"></div>
             </div>
         </div>
     </div>
