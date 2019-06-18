@@ -10,6 +10,8 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script type="text/javascript" src="data.js"></script>
     <script type="text/javascript" src="index.js"></script>
+    <script type="text/javascript" src="kmeans.js"></script>
+    <script type="text/javascript" src="mst.js"></script>
 </head>
 
 <body onload="InitLoad()">
@@ -17,17 +19,24 @@
         <div id="graph" style="cursor: default;">
 
         </div>
-        <div id="options">
+        <div id="options1">
             <div class="DivDecor">
-                <select id="algoSelect">
-                    <option value="Kmeans">K Means</option>
-                    <option value="MST">MST</option>
-                </select><br>
-               <textarea name="coordinates" id="X" readonly></textarea><br>
-               <textarea name="coordinates" id="Y" readonly></textarea>
-            </div>
-            <div class="DivDecor">
+                <div id="algoselectionDiv">
+                    <select id="algoSelect">
+                        <option value="Kmeans">K Means</option>
+                        <option value="MST">MST</option>
+                    </select><br>
+                    <button class="buttonDecor" onclick="selectAlgo()">Select the Algorithm</button>
+                </div>
 
+                <button class="buttonDecor" onclick="cancelAlgo()" id="cancelAlgo" style="display: none">Select Other
+                    Algorithm</button>
+            </div>
+
+
+            <div class="DivDecor" id="Kmeans1Div">
+                <textarea name="coordinates" id="X" readonly></textarea><br>
+                <textarea name="coordinates" id="Y" readonly></textarea>
                 <h4>Load Custom Data Sets</h4><br>
                 <select id="traceSelect">
                     <option value="1">L1</option>
@@ -35,27 +44,41 @@
                     <option value="3">L3</option>
                     <option value="4">L4</option>
                 </select>
-                <button id="load" onclick="loadRandomTraces()">Load</button>
+                <button class="buttonDecor" id="load" onclick="loadRandomTraces()">Load</button>
             </div>
-            <div class="DivDecor">
+            <div class="DivDecor" id="MST1Div">
+                <h4>Assuming completely connected graph</h4><br>
+            </div>
+        </div>
+
+        <div>
+            <div class="DivDecor" id="Kmeans2Div">
+                <button class="buttonDecor" id="start" onclick="KMeans_startIteration()">Start</button>
+                <button class="buttonDecor" id="next" onclick="KMeans_nextIteration()">Next</button>
+                <button class="buttonDecor" id="finish" onclick="KMeans_finishIteration()">Finish</button><br><br>
+                Iteration Number : <div id="class"></div>
+            </div>
+            <div class="DivDecor" id="MST2Div">
+                <button class="buttonDecor" id="start_mst" onclick="MST_startIteration()">Start</button>
+                <button class="buttonDecor" id="next_mst" onclick="MST_nextIteration()">Next</button>
+                <button class="buttonDecor" id="finish_mst" onclick="MST_finishIteration()">Finish</button><br><br>
+                Iteration Number : <div id="class_mst"></div>
+            </div>
+        </div>
+
+        <div>
+            <div class="DivDecor" id="UserDiv" style="display: none;">
+
                 <h4>Mark Points</h4><br>
                 TestPoints<br>
                 <label class="switch">
                     <input id="TestPoints" type="checkbox">
                     <span class="slider"></span>
                 </label>
-                <button id="clear" onclick="removetestPoints()">Remove first point</button>
-            </div>
-            <div class="DivDecor">
-                <button id="start" onclick="startIteration()">Start</button>
-                <button id="next" onclick="nextIteration()">Next</button>
-                <button id="finish" onclick="finishIteration()">Finish</button><br><br>
-                Iteration Number : <div id="class"></div>
+                <button class="buttonDecor" id="clear" onclick="removetestPoints()">Remove first point</button>
             </div>
         </div>
-    </div>
-    <div class="className">
-        Class1 Class2 Class3 Class4 Test
+
     </div>
 </body>
 

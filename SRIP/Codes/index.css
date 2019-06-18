@@ -4,9 +4,25 @@
     grid-gap:1em;
     grid-auto-rows: minmax(100px,auto);
 }
+
 .DivDecor{
     margin: 3em;
     padding: 1em;
     border: 1px solid black;
     background-color: burlywood;
+}
+.buttonDecor{
+    background-color: white;
+    border: 2px solid grey;
+    border-radius: 5px;
+    color: grey;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 4px 2px;
+}
+.buttonDecor:hover{
+   font-weight: bold;
+    color:grey;
 }
