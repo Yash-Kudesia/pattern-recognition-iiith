@@ -54,7 +54,7 @@ function kMeans(iterationNo) {
                 console.log("Eculidiean distance->" + dist);
                 if (dist < min) {
                     min = dist;
-                    store = j;
+                    store = DataSet[j];
                 }
             }
             TestPoints[i].indexOfCluster = store;
@@ -70,7 +70,7 @@ function kMeans(iterationNo) {
                     var dist = euclidienDistance(POINTS[i].x, Centroids[j].x, POINTS[i].y, Centroids[j].y);
                     if (dist < min) {
                         min = dist;
-                        store = j;
+                        store = DataSet[j];
                     }
                 }
                 POINTS[i].indexOfCluster = store;
@@ -117,7 +117,7 @@ function kMeans(iterationNo) {
 
 }
 
-function utility_plot(temp_Points, k) {
+function utility_plot(temp_Points, k,it) {
     var temp_x = [];
     var temp_y = [];
     var data = [];
@@ -136,17 +136,6 @@ function utility_plot(temp_Points, k) {
                 color: 'red'
             }
         };
-        data.push(trace);
-        var newlayout = {
-            autosize: true,
-            yaxis: {
-                fixedrange: true
-            },
-            xaxis: {
-                fixedrange: true
-            }
-        };
-        Plotly.newPlot('graph', data, newlayout);
     }
     else if (k == 1) {
         var trace = {
@@ -159,17 +148,6 @@ function utility_plot(temp_Points, k) {
                 color: 'blue'
             }
         };
-        data.push(trace);
-        var newlayout = {
-            autosize: true,
-            yaxis: {
-                fixedrange: true
-            },
-            xaxis: {
-                fixedrange: true
-            }
-        };
-        Plotly.plot('graph', data, newlayout);
     }
     else if (k == 2) {
         var trace = {
@@ -182,17 +160,6 @@ function utility_plot(temp_Points, k) {
                 color: 'green'
             }
         };
-        data.push(trace);
-        var newlayout = {
-            autosize: true,
-            yaxis: {
-                fixedrange: true
-            },
-            xaxis: {
-                fixedrange: true
-            }
-        };
-        Plotly.plot('graph', data, newlayout);
     }
     else if (k == 3) {
         var trace = {
@@ -205,18 +172,25 @@ function utility_plot(temp_Points, k) {
                 color: 'yellow'
             }
         };
-        data.push(trace);
-        var newlayout = {
-            autosize: true,
-            yaxis: {
-                fixedrange: true
-            },
-            xaxis: {
-                fixedrange: true
-            }
-        };
+
+    }
+    data.push(trace);
+    var newlayout = {
+        autosize: true,
+        yaxis: {
+            fixedrange: true
+        },
+        xaxis: {
+            fixedrange: true
+        }
+    };
+    if(it==0){
+        Plotly.newPlot('graph', data, newlayout);
+    }
+    else{
         Plotly.plot('graph', data, newlayout);
     }
+   
 }
 
 function plotIterationpoints() {
@@ -232,12 +206,20 @@ function plotIterationpoints() {
                 temp_Points.push(TestPoints[m]);
             }
         }
-        utility_plot(temp_Points, DataSet[k]);
+        utility_plot(temp_Points, DataSet[k],k);
     }
 }
 
 var count_Iteration = 0;
+function makeobjects(i) {
 
+    for (var j = 0; j < X[i].length; j++) {
+        var obj = new Constructor(X[i][j], Y[i][j]);
+        obj.indexOfCluster = i;
+        POINTS.push(obj);
+    }
+    //here we have classfied points in class for easy calculations
+}
 function KMeans_startIteration() {
     console.log("Start iteration for kmeans");
     //collecting points for calculation
@@ -261,6 +243,7 @@ function KMeans_startIteration() {
     count_Iteration = count_Iteration + 1;
     console.log("Iteration->>" + count_Iteration);
     document.getElementById("class").innerHTML = count_Iteration.toString();
+    document.getElementById("status_kmeans").innerHTML = "Iterations Started";
     plotIterationpoints();
 }
 function KMeans_nextIteration() {
@@ -268,12 +251,14 @@ function KMeans_nextIteration() {
 
     var state = kMeans(count_Iteration);
     if (state !== 0) {
+        document.getElementById("status_kmeans").innerHTML = "Iterations Completed";
         console.log("No more iteration possible");
     }
     else {
         count_Iteration = count_Iteration + 1;
         document.getElementById("class").innerHTML = count_Iteration.toString();
         plotIterationpoints();
+        document.getElementById("status_kmeans").innerHTML = count_Iteration + " iteration completed";
     }
 }
 function KMeans_finishIteration() {
@@ -294,6 +279,7 @@ function KMeans_finishIteration() {
     if (state !== 0) {
         count_Iteration = -1;
         console.log("No more iteration possible");
+        document.getElementById("status_kmeans").innerHTML = "Iterations Completed";
     }
-
+    document.getElementById("status_kmeans").innerHTML = "Iterations Completed";
 }

@@ -32,7 +32,7 @@ function findCentroid(index) {
             temp_points.push(OutPutEdges[i].source);
             sum_x = sum_x + OutPutEdges[i].source.x;
             sum_y = sum_y + OutPutEdges[i].source.y;
-            console.log(OutPutEdges[i].source.x + "   " + temp_points[i].x + "   " + OutPutEdges[i].source.y + "   " + temp_points[i].y);
+            //console.log(OutPutEdges[i].source.x + "   " + temp_points[i].x + "   " + OutPutEdges[i].source.y + "   " + temp_points[i].y);
             console.log("In temp points S->>" + i);
         }
         // if (temp_points.indexOf(OutPutEdges[i].destination) == -1 && OutPutEdges[i].out == 0) {
@@ -42,7 +42,7 @@ function findCentroid(index) {
             temp_points.push(OutPutEdges[i].destination);
             sum_x = sum_x + OutPutEdges[i].destination.x;
             sum_y = sum_y + OutPutEdges[i].destination.y;
-            console.log(OutPutEdges[i].destination.x + "   " + temp_points[i].x + "   " + OutPutEdges[i].destination.y + "   " + temp_points[i].y);
+            //console.log(OutPutEdges[i].destination.x + "   " + temp_points[i].x + "   " + OutPutEdges[i].destination.y + "   " + temp_points[i].y);
             console.log("In temp points D->>" + i);
         }
     }
@@ -233,6 +233,7 @@ function MST_startIteration() {
     mstPlot();
     MST_itertaion_count = MST_itertaion_count + 1;
     document.getElementById("class_mst").innerHTML = MST_itertaion_count;
+    document.getElementById("status_mst").innerHTML="Iterations Started";
 }
 function MST_nextIteration() {
     console.log("Next iteration for MST");
@@ -244,14 +245,17 @@ function MST_nextIteration() {
             mstPlot();
             MST_itertaion_count = MST_itertaion_count + 1;
             document.getElementById("class_mst").innerHTML = MST_itertaion_count;
+            document.getElementById("status_mst").innerHTML=MST_itertaion_count+ "iteration completed";
         }
         else {
             MST_itertaion_count = -1;
             console.log("Iterations completed");
+            document.getElementById("status_mst").innerHTML="Iterations completed";
         }
     }
     else {
         console.log("Iterations completed");
+        document.getElementById("status_mst").innerHTML="Iterations completed";
     }
 
 }
@@ -270,10 +274,12 @@ function MST_finishIteration() {
         mstPlot();
         document.getElementById("class_mst").innerHTML = MST_itertaion_count;
         console.log("Iterations completed");
+        document.getElementById("status_mst").innerHTML="Iterations completed";
         MST_itertaion_count = -1;
     }
     else {
         console.log("Iterations completed");
+        document.getElementById("status_mst").innerHTML="Iterations completed";
     }
 
 

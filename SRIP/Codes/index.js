@@ -93,7 +93,7 @@ function removetestPoints() {
             console.log("Trace Removed");
         }
     }
-    else{
+    else {
         console.log("Can't remove Traces");
     }
 
@@ -153,8 +153,14 @@ function mouseOverElement(evt) {
         xInDataCoord = parseFloat(xInDataCoord.toFixed(1));
         yInDataCoord = parseFloat(yInDataCoord.toFixed(1));
         // Plotly.relayout(gd, 'title', ['x: ' + xInDataCoord, 'y : ' + yInDataCoord].join('<br>'));
-        document.getElementById("X").value = "X Coordinates-:" + xInDataCoord;
-        document.getElementById("Y").value = "Y Coordinates-:" + yInDataCoord;
+        if( document.getElementById("algoSelect").value=="Kmeans"){
+            document.getElementById("X").value = "X Coordinates-:" + xInDataCoord;
+            document.getElementById("Y").value = "Y Coordinates-:" + yInDataCoord;
+        }else{
+            document.getElementById("X_MST").value = "X Coordinates-:" + xInDataCoord;
+            document.getElementById("Y_MST").value = "Y Coordinates-:" + yInDataCoord;
+        }
+       
     }
 }
 
@@ -178,7 +184,10 @@ function InitLoad() {
 
     //variable for mst clustering
     OutPutEdges = [];   //contains the output mst
+    MST_itertaion_count = -1;
     temp_points = [];
+    pre_store_points = [];
+    store_points = [];
     temp_count = 0;
     temp_centroid_x = -1;
     temp_centroid_y = -1;
@@ -250,15 +259,7 @@ function loadRandomTraces() {
     console.log("trace loaded");
 }
 
-function makeobjects(i) {
 
-    for (var j = 0; j < X[i].length; j++) {
-        var obj = new Constructor(X[i][j], Y[i][j]);
-        obj.indexOfCluster = i;
-        POINTS.push(obj);
-    }
-    //here we have classfied points in class for easy calculations
-}
 function euclidienDistance(x1, x2, y1, y2) {
     console.log("euclidien Distance");
     var x = x2 - x1;
