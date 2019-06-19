@@ -26,7 +26,7 @@ function checkConvergence() {
     console.log("check Convergence");
     var state = 0;
     if (temp_Centroid !== null) {
-        for (var i = 0; i < temp_Centroid.length; i++) {
+        for (var i = 0; i < Centroid.length; i++) {
             state = 0;
             if (Centroids[i].x == temp_Centroid[i].x) {
                 if (Centroids[i].y == temp_Centroid[i].y) {

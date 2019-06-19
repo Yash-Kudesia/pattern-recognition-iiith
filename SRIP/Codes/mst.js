@@ -96,6 +96,8 @@ function findThreshold() {
                 store_points.push(temp_points[i]);
             }
         }
+        console.log("************************************************");
+        console.log("Ratio->"+min+"    "+ratio);
         index = findNextMax();
         temp_points = [];
         console.log("Index->>" + index);
