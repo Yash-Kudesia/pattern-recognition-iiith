@@ -4,29 +4,13 @@ var temp_Centroid = [];
 var POINTS = []; //contains points of each classes in subarray
 
 
-function calculateCentroids(temp_Points) {
-    console.log("calculate Centroids");
-    var total_X = 0;
-    var total_Y = 0;
-    for (var i = 0; i < temp_Points.length; i++) {
-        console.log("points-used for centroid->>" + temp_Points[i].x + "  " + temp_Points[i].y);
-        total_X = total_X + temp_Points[i].x;
-        total_Y = total_Y + temp_Points[i].y;
-        console.log("totalX->" + total_X + "  totalY->" + total_Y);
-    }
-    console.log("->>" + total_X + "  " + total_Y + "  ->> " + temp_Points.length);
-    var centroid_X = total_X / temp_Points.length;
-    var centroid_Y = total_Y / temp_Points.length;
-    console.log("Calcultaed Centroid->>" + centroid_X + "  " + centroid_Y);
-    var obj = new Constructor(centroid_X, centroid_Y);
-    return obj;
-}
+
 
 function checkConvergence() {
     console.log("check Convergence");
     var state = 0;
-    if (temp_Centroid !== null) {
-        for (var i = 0; i < Centroid.length; i++) {
+    if (temp_Centroid.length>0) {
+        for (var i = 0; i < Centroids.length; i++) {
             state = 0;
             if (Centroids[i].x == temp_Centroid[i].x) {
                 if (Centroids[i].y == temp_Centroid[i].y) {
@@ -176,7 +160,7 @@ function utility_plot(temp_Points, k,it) {
     }
     data.push(trace);
     var newlayout = {
-        autosize: true,
+        autosize: false,
         yaxis: {
             fixedrange: true
         },

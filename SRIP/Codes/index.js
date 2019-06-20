@@ -35,7 +35,8 @@ function cancelAlgo() {
         },
         xaxis: {
             fixedrange: true
-        }
+        },
+        showlegend: false
     };
     Plotly.newPlot('graph', newdata, newlayout).then(attach);
 }
@@ -71,7 +72,8 @@ function plotGraph(newdata) {
         },
         xaxis: {
             fixedrange: true
-        }
+        },
+        showlegend: false
     };
     Plotly.plot('graph', newdata, newlayout).then(attach);
 }
@@ -116,8 +118,8 @@ function clickEvent(evt) {
 
         var xInDataCoord = xaxis.p2c(evt.x - l);
         var yInDataCoord = yaxis.p2c(evt.y - t);
-        xInDataCoord = parseFloat(xInDataCoord.toFixed(1));
-        yInDataCoord = parseFloat(yInDataCoord.toFixed(1));
+        xInDataCoord = parseFloat(xInDataCoord.toFixed(3));
+        yInDataCoord = parseFloat(yInDataCoord.toFixed(3));
         var x_temp = [xInDataCoord];
         var y_temp = [yInDataCoord];
         var trace = {
@@ -150,8 +152,8 @@ function mouseOverElement(evt) {
 
         var xInDataCoord = xaxis.p2c(evt.x - l);
         var yInDataCoord = yaxis.p2c(evt.y - t);
-        xInDataCoord = parseFloat(xInDataCoord.toFixed(1));
-        yInDataCoord = parseFloat(yInDataCoord.toFixed(1));
+        xInDataCoord = parseFloat(xInDataCoord.toFixed(3));
+        yInDataCoord = parseFloat(yInDataCoord.toFixed(3));
         // Plotly.relayout(gd, 'title', ['x: ' + xInDataCoord, 'y : ' + yInDataCoord].join('<br>'));
         if( document.getElementById("algoSelect").value=="Kmeans"){
             document.getElementById("X").value = "X Coordinates-:" + xInDataCoord;
@@ -188,7 +190,6 @@ function InitLoad() {
     temp_points = [];
     pre_store_points = [];
     store_points = [];
-    temp_count = 0;
     temp_centroid_x = -1;
     temp_centroid_y = -1;
 }
@@ -266,4 +267,21 @@ function euclidienDistance(x1, x2, y1, y2) {
     var y = y2 - y1;
     var sqroot = (x * x) + (y * y);
     return Math.sqrt(sqroot);
+}
+function calculateCentroids(temp_points_) {
+    console.log("calculate Centroids");
+    var total_X = 0;
+    var total_Y = 0;
+    for (var i = 0; i < temp_points_.length; i++) {
+        console.log("points-used for centroid->>" + temp_points_[i].x + "  " + temp_points_[i].y);
+        total_X = total_X + temp_points_[i].x;
+        total_Y = total_Y + temp_points_[i].y;
+        console.log("totalX->" + total_X + "  totalY->" + total_Y);
+    }
+    console.log("->>" + total_X + "  " + total_Y + "  ->> " + temp_points_.length);
+    var centroid_X = total_X / temp_points_.length;
+    var centroid_Y = total_Y / temp_points_.length;
+    console.log("Calcultaed Centroid->>" + centroid_X + "  " + centroid_Y);
+    var obj = new Constructor(centroid_X, centroid_Y);
+    return obj;
 }

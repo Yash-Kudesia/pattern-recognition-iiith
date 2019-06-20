@@ -1,54 +1,13 @@
 var OutPutEdges = [];   //contains the output mst
-
 var MST_itertaion_count = -1;
 
 var temp_points = [];
 var pre_store_points = [];
 var store_points = [];
 
-var temp_count = 0;
 var temp_centroid_x = -1;
 var temp_centroid_y = -1;
 
-
-function findNextMax() {
-    console.log("In findNextMax");
-    while (temp_count >= 0 && OutPutEdges[temp_count].out == 1) {
-        temp_count = temp_count - 1;
-    }
-    temp_count = temp_count - 1;
-    return temp_count;
-}
-function findCentroid(index) {
-    console.log("In findCentroid");
-
-    var sum_x = 0;
-    var sum_y = 0;
-    for (var i = 0; i <= index; i++) {
-        // if (temp_points.indexOf(OutPutEdges[i].source) == -1 && OutPutEdges[i].out == 0) {
-        var t = findIndexTestpoint(temp_points, OutPutEdges[i].source);
-        console.log("t S->>" + t);
-        if (t == -1 && OutPutEdges[i].out == 0) {
-            temp_points.push(OutPutEdges[i].source);
-            sum_x = sum_x + OutPutEdges[i].source.x;
-            sum_y = sum_y + OutPutEdges[i].source.y;
-            //console.log(OutPutEdges[i].source.x + "   " + temp_points[i].x + "   " + OutPutEdges[i].source.y + "   " + temp_points[i].y);
-            console.log("In temp points S->>" + i);
-        }
-        // if (temp_points.indexOf(OutPutEdges[i].destination) == -1 && OutPutEdges[i].out == 0) {
-        var t = findIndexTestpoint(temp_points, OutPutEdges[i].destination);
-        console.log("t D->>" + t);
-        if (t == -1 && OutPutEdges[i].out == 0) {
-            temp_points.push(OutPutEdges[i].destination);
-            sum_x = sum_x + OutPutEdges[i].destination.x;
-            sum_y = sum_y + OutPutEdges[i].destination.y;
-            //console.log(OutPutEdges[i].destination.x + "   " + temp_points[i].x + "   " + OutPutEdges[i].destination.y + "   " + temp_points[i].y);
-            console.log("In temp points D->>" + i);
-        }
-    }
-    temp_centroid_x = (sum_x) / (index + 1);
-    temp_centroid_y = (sum_y) / (index + 1);
-}
 function findIntraClusterDist() {
     console.log("In findIntraClusterDist");
     var max = 0;
@@ -78,14 +37,19 @@ function findInterClusterDist() {
 }
 
 //We have to find the threshold at each iteration
-function findThreshold() {
+function findThreshold(extracted_points) {
     console.log("In findThreshold");
     //here we first iterate through all values of threshold to select the value based on ratio
-    var index;
-    index = findNextMax();
+    var index = extracted_points.length - 2;
     var min = 1000000000;
     while (index > 0) {
-        findCentroid(index);
+        for (var i = 0; i <= index; i++) {
+            temp_points.push(extracted_points[i]);
+        }
+        var centroid_obj = calculateCentroids(temp_points);
+        temp_centroid_x = centroid_obj.x;
+        temp_centroid_y = centroid_obj.y;
+
         var dist1 = findIntraClusterDist();
         var dist2 = findInterClusterDist();
         var ratio = dist1 / dist2;
@@ -96,19 +60,40 @@ function findThreshold() {
                 store_points.push(temp_points[i]);
             }
         }
-        console.log("************************************************");
-        console.log("Ratio->"+min+"    "+ratio);
-        index = findNextMax();
+        console.log("Ratio->" + min + "    " + ratio);
         temp_points = [];
-        console.log("Index->>" + index);
+        index = index - 1;
     }
     //so threshold will be like, all the index after store must be removed from cluster
 }
 
+function extractPoints() {
+    //extract points from output edges->>>>>>>>
+    var extracted_points = [];
+    for (var i = 0; i < OutPutEdges.length; i++) {
+        if (findIndexTestpoint(extracted_points, OutPutEdges[i].source) == -1 && OutPutEdges[i].out != 1) {
+            extracted_points.push(OutPutEdges[i].source);
+        }
+        if (findIndexTestpoint(extracted_points, OutPutEdges[i].destination) == -1 && OutPutEdges[i].out != 1) {
+            extracted_points.push(OutPutEdges[i].destination);
+        }
+    }
 
+    return extracted_points;
+}
 function MSTClustering() {
     console.log("In MSTClustering");
-    findThreshold();
+    var extracted_points = extractPoints();
+    //Now sort these points based on the distnace from centroid of mst
+    var centroid_extracted_points = calculateCentroids(extracted_points);
+    extracted_points.sort(function (a, b) {
+        var d1 = euclidienDistance(a.x, centroid_extracted_points.x, a.y, centroid_extracted_points.y);
+        var d2 = euclidienDistance(b.x, centroid_extracted_points.x, b.y, centroid_extracted_points.y);
+        return d1 - d2;
+    });
+
+
+    findThreshold(extracted_points);
     //now we update the out variable of Output Edges based on temp_points
     for (var i = 0; i < OutPutEdges.length; i++) {
         // if (temp_points.indexOf(OutPutEdges[i].source) == -1) {
@@ -121,10 +106,9 @@ function MSTClustering() {
         }
     }
 
-    temp_count = OutPutEdges.length - 1;
     //upto here we have all the points to be in cluster in store_points variable array
     var state = 1;
-    if (pre_store_points.length>0 && pre_store_points.length == store_points.length) {
+    if (pre_store_points.length > 0 && pre_store_points.length == store_points.length) {
         for (var i = 0; i < store_points.length; i++) {
             state = 1;
             if (store_points[i].x == pre_store_points[i].x) {
@@ -134,10 +118,10 @@ function MSTClustering() {
             }
         }
     }
-    if(pre_store_points.length==0 && store_points.length==0){
-        state=0;
+    if (pre_store_points.length == 0 && store_points.length == 0) {
+        state = 0;
     }
-    
+
     pre_store_points = [];
     for (var i = 0; i < store_points.length; i++) {
         pre_store_points.push(store_points[i]);
@@ -150,28 +134,28 @@ function MSTClustering() {
 /*****************************************************************************************************/
 
 function mstPlot() {
+
     //now plotting
     console.log("In mstPlot");
     var temp_points_plot = [];
     var temp_x = [];
     var temp_y = [];
     var data = [];
-
     if (store_points.length > 0) {
+        store_points.sort(function (a, b) {
+            return a.x-b.x;
+        });
         for (var i = 0; i < TestPoints.length; i++) {
             if (findIndexTestpoint(store_points, TestPoints[i]) == -1) {
                 temp_points_plot.push(TestPoints[i]);
             }
         }
-        console.log(store_points.length);
         for (var i = 0; i < store_points.length; i++) {
-            console.log(store_points[i].x + "->>" + store_points[i].y);
             temp_x.push(store_points[i].x);
             temp_y.push(store_points[i].y);
         }
     }
     else {
-        console.log(store_points.length);
         for (var i = 0; i < TestPoints.length; i++) {
             temp_x.push(TestPoints[i].x);
             temp_y.push(TestPoints[i].y);
@@ -189,13 +173,14 @@ function mstPlot() {
     };
     data.push(trace);
     var newlayout = {
-        autosize: true,
+        autosize: false,
         yaxis: {
             fixedrange: true
         },
         xaxis: {
             fixedrange: true
-        }
+        },
+        showlegend: false
     };
     Plotly.newPlot('graph', data, newlayout);
     if (temp_points_plot.length > 0) {
@@ -216,13 +201,14 @@ function mstPlot() {
         };
         data.push(trace);
         var newlayout = {
-            autosize: true,
+            autosize: false,
             yaxis: {
                 fixedrange: true
             },
             xaxis: {
                 fixedrange: true
-            }
+            },
+            showlegend: false
         };
         Plotly.plot('graph', data, newlayout);
     }
@@ -235,7 +221,8 @@ function MST_startIteration() {
     mstPlot();
     MST_itertaion_count = MST_itertaion_count + 1;
     document.getElementById("class_mst").innerHTML = MST_itertaion_count;
-    document.getElementById("status_mst").innerHTML="Iterations Started";
+    document.getElementById("status_mst").innerHTML = "Iterations Started";
+
 }
 function MST_nextIteration() {
     console.log("Next iteration for MST");
@@ -247,17 +234,17 @@ function MST_nextIteration() {
             mstPlot();
             MST_itertaion_count = MST_itertaion_count + 1;
             document.getElementById("class_mst").innerHTML = MST_itertaion_count;
-            document.getElementById("status_mst").innerHTML=MST_itertaion_count+ "iteration completed";
+            document.getElementById("status_mst").innerHTML = MST_itertaion_count + "iteration completed";
         }
         else {
             MST_itertaion_count = -1;
             console.log("Iterations completed");
-            document.getElementById("status_mst").innerHTML="Iterations completed";
+            document.getElementById("status_mst").innerHTML = "Iterations completed";
         }
     }
     else {
         console.log("Iterations completed");
-        document.getElementById("status_mst").innerHTML="Iterations completed";
+        document.getElementById("status_mst").innerHTML = "Iterations completed";
     }
 
 }
@@ -268,7 +255,7 @@ function MST_finishIteration() {
         while (status == 1) {
             status = MSTClustering();
             MST_itertaion_count = MST_itertaion_count + 1;
-            if(MST_itertaion_count>=limit){
+            if (MST_itertaion_count >= limit) {
                 alert("Iterations exceded safe limit");
                 break;
             }
@@ -276,12 +263,12 @@ function MST_finishIteration() {
         mstPlot();
         document.getElementById("class_mst").innerHTML = MST_itertaion_count;
         console.log("Iterations completed");
-        document.getElementById("status_mst").innerHTML="Iterations completed";
+        document.getElementById("status_mst").innerHTML = "Iterations completed";
         MST_itertaion_count = -1;
     }
     else {
         console.log("Iterations completed");
-        document.getElementById("status_mst").innerHTML="Iterations completed";
+        document.getElementById("status_mst").innerHTML = "Iterations completed";
     }
 
 
@@ -353,7 +340,7 @@ function kruskalAlgo(Edges, parent) {
     }
     //now sorting the output edges based on distance
     OutPutEdges.sort(function (obj1, obj2) { return obj1.dist - obj2.dist });
-    temp_count = OutPutEdges.length - 1;  //to avoid extreme of threshold
+
 
 }
 
