@@ -155,14 +155,14 @@ function mouseOverElement(evt) {
         xInDataCoord = parseFloat(xInDataCoord.toFixed(3));
         yInDataCoord = parseFloat(yInDataCoord.toFixed(3));
         // Plotly.relayout(gd, 'title', ['x: ' + xInDataCoord, 'y : ' + yInDataCoord].join('<br>'));
-        if( document.getElementById("algoSelect").value=="Kmeans"){
+        if (document.getElementById("algoSelect").value == "Kmeans") {
             document.getElementById("X").value = "X Coordinates-:" + xInDataCoord;
             document.getElementById("Y").value = "Y Coordinates-:" + yInDataCoord;
-        }else{
+        } else {
             document.getElementById("X_MST").value = "X Coordinates-:" + xInDataCoord;
             document.getElementById("Y_MST").value = "Y Coordinates-:" + yInDataCoord;
         }
-       
+
     }
 }
 
@@ -185,13 +185,17 @@ function InitLoad() {
     TestPoints = [];  //contains all the user testpoints
 
     //variable for mst clustering
-    OutPutEdges = [];   //contains the output mst
-    MST_itertaion_count = -1;
-    temp_points = [];
-    pre_store_points = [];
-    store_points = [];
-    temp_centroid_x = -1;
-    temp_centroid_y = -1;
+    stock_Edges = [];
+    MSTEdges = [];
+    MSTEdgesSEL = [];
+    MSTEdgesREJ = [];
+    OUTPUT = [];
+    Threshold = 0.4;//optimal value
+    state = 1;
+    count_Iteration_mst = 0;
+    key = [];
+    parent = [];
+    selected = [];  //contains vertices in mst
 }
 function loadRandomTraces() {
     var trace = {};
@@ -273,12 +277,12 @@ function calculateCentroids(temp_points_) {
     var total_X = 0;
     var total_Y = 0;
     for (var i = 0; i < temp_points_.length; i++) {
-        console.log("points-used for centroid->>" + temp_points_[i].x + "  " + temp_points_[i].y);
+        // console.log("points-used for centroid->>" + temp_points_[i].x + "  " + temp_points_[i].y);
         total_X = total_X + temp_points_[i].x;
         total_Y = total_Y + temp_points_[i].y;
-        console.log("totalX->" + total_X + "  totalY->" + total_Y);
+        //console.log("totalX->" + total_X + "  totalY->" + total_Y);
     }
-    console.log("->>" + total_X + "  " + total_Y + "  ->> " + temp_points_.length);
+    //console.log("->>" + total_X + "  " + total_Y + "  ->> " + temp_points_.length);
     var centroid_X = total_X / temp_points_.length;
     var centroid_Y = total_Y / temp_points_.length;
     console.log("Calcultaed Centroid->>" + centroid_X + "  " + centroid_Y);
