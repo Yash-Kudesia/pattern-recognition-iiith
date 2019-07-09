@@ -6,41 +6,44 @@ var OUTPUT = [];
 var Threshold = 0.4;//optimal
 var state = 1;
 var count_Iteration_mst=0;
-
+var IC="Iteration Count -: ";
+var IS="Iteration Status -: ";
 
 function MST_startIteration() {
     console.log("***********MST_startIteration**************");
     count_Iteration_mst=count_Iteration_mst+1;
     main_Algorithm();
     mainIteration_Algorithm();
-    document.getElementById("class_mst").innerHTML = count_Iteration_mst.toString();
-    document.getElementById("status_mst").innerHTML = "Iterations Started";
+    document.getElementById("class_mst").innerHTML = IC+count_Iteration_mst.toString();
+    document.getElementById("status_mst").innerHTML =IS+ "Iterations Started";
 }
 function MST_nextIteration() {
     console.log("***************MST_nextIteration****************");
-    if (state == 1) {
+    if (state == 1 && count_Iteration_mst<=limit_loop) {
         state = mainIteration_Algorithm();
-        var x = 'orange';
+        var x = 'red';
         mstplot(OUTPUT, x);
         count_Iteration_mst=count_Iteration_mst+1;
-        document.getElementById("class_mst").innerHTML = count_Iteration_mst.toString();
-        document.getElementById("status_mst").innerHTML = "Iterations Ongoing";
+        document.getElementById("class_mst").innerHTML = IC+ count_Iteration_mst.toString();
+        document.getElementById("status_mst").innerHTML =IS+ "Iterations Ongoing";
     }
     else {
+        var x = 'green';
+        mstplot(OUTPUT, x);
+        document.getElementById("status_mst").innerHTML =IS+ "Iterations Completed";
         console.log("Algorithm completes");
     }
 }
 function MST_finishIteration() {
     console.log("*****************MST_finishIteration******************");
-    var x = 0;
-    while (x < limit_loop && state == 1) {
+    while (count_Iteration_mst <= limit_loop && state == 1) {
         state = mainIteration_Algorithm();
         count_Iteration_mst=count_Iteration_mst+1;
     }
-    var x = 'red';
+    var x = 'green';
     mstplot(OUTPUT, x);
-    document.getElementById("class_mst").innerHTML = count_Iteration_mst.toString();
-    document.getElementById("status_mst").innerHTML = "Iterations Completed";
+    document.getElementById("class_mst").innerHTML = IC+  count_Iteration_mst.toString();
+    document.getElementById("status_mst").innerHTML =IS+ "Iterations Completed";
     console.log("Algorihtm finishes");
 }
 
@@ -111,7 +114,7 @@ function main_Algorithm() {
 
     //step-1 of main algo is to create a mst using prims algorithm
     MSTEdges = primsAlgo(Input_Edges);
-    mstplot(MSTEdges, 'orange');
+    mstplot(MSTEdges, 'red');
 
     //step-2 of main algo is sorting the mst edges based on distance
     MSTEdges.sort(function (obj1, obj2) { return obj1.dist - obj2.dist });
@@ -264,7 +267,7 @@ function mstplot(MST, x) {
             y: temp_2,
             mode: 'lines+markers',
             marker: {
-                color: 'brown'
+                color: 'black'
             },
             line: {
                 color: x
@@ -299,7 +302,7 @@ function mstplot(MST, x) {
         mode: 'markers',
         type: 'scatter',
         marker: {
-            color: 'brown'
+            color: 'black'
         }
     };
 

@@ -50,7 +50,7 @@
             </div>
             <div class="DivDecor" id="MST1Div">
                 <h4>Assuming completely connected graph</h4><br>
-                <h4>Each Red dot represent one cluster each and blue dots represnt MST as a whole</h4><br>
+                <h4>Each Single point is cluster in itself and no two cluster are connected via any edge</h4><br>
                 <textarea name="coordinates" id="X_MST" readonly></textarea><br>
                 <textarea name="coordinates" id="Y_MST" readonly></textarea>
             </div>
@@ -68,8 +68,8 @@
                 <button class="buttonDecor" id="start_mst" onclick="MST_startIteration()">Start</button>
                 <button class="buttonDecor" id="next_mst" onclick="MST_nextIteration()">Next</button>
                 <button class="buttonDecor" id="finish_mst" onclick="MST_finishIteration()">Finish</button><br><br>
-                Iteration Number : <div id="class_mst"></div>
-                Iteration status-:<div id="status_mst"></div>
+               <div id="class_mst"></div>
+                <div id="status_mst"></div>
             </div>
         </div>
 
