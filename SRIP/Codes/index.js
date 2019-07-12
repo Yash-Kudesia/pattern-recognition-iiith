@@ -173,7 +173,17 @@ function InitLoad() {
     console.log("Init Load");
     var trace = {};
     var data = [trace]
-    plotGraph(data);
+    var newlayout = {
+        autosize: false,
+        yaxis: {
+            fixedrange: true
+        },
+        xaxis: {
+            fixedrange: true
+        },
+        showlegend: false
+    };
+    Plotly.plot('graph', data, newlayout).then(attach);
     document.getElementById("class").innerHTML = "0";
 
 
@@ -223,7 +233,6 @@ function loadRandomTraces() {
                 type: 'scatter',
 
                 marker: {
-                    symbol: "square",
                     color: 'blue'
                 }
             };
@@ -237,7 +246,6 @@ function loadRandomTraces() {
 
                 type: 'scatter',
                 marker: {
-                    symbol: "triangle-up",
                     color: 'green'
                 }
             };
@@ -250,8 +258,7 @@ function loadRandomTraces() {
                 mode: 'markers',
                 type: 'scatter',
                 marker: {
-                    symbol: "diamond",
-                    color: 'yellow'
+                    color: 'orange'
                 }
             };
             DataSet.push(3);

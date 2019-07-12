@@ -36,7 +36,7 @@ function MST_nextIteration() {
 }
 function MST_finishIteration() {
     console.log("*****************MST_finishIteration******************");
-    while (count_Iteration_mst <= limit_loop && state == 1) {
+    while (state == 1 && count_Iteration_mst<=limit_loop) {
         state = mainIteration_Algorithm();
         count_Iteration_mst=count_Iteration_mst+1;
     }
@@ -277,17 +277,11 @@ function mstplot(MST, x) {
         data.push(trace);
     }
     var layout = {
-        autosize: false,
-        yaxis: {
-            fixedrange: true
-        },
-        xaxis: {
-            fixedrange: true
-        },
+        hovermode: 'none',
         showlegend: false
     };
 
-    Plotly.newPlot('graph', data, layout);
+    Plotly.newPlot('graph', data, layout, {scrollZoom: true},{displayModeBar: false},{responsive: true});
     //plotting all the points
     var t_x=[];
     var t_y=[];

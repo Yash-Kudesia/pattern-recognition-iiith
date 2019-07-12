@@ -128,7 +128,6 @@ function utility_plot(temp_Points, k,it) {
             mode: 'markers',
             type: 'scatter',
             marker: {
-                symbol: "square",
                 color: 'blue'
             }
         };
@@ -140,7 +139,6 @@ function utility_plot(temp_Points, k,it) {
             mode: 'markers',
             type: 'scatter',
             marker: {
-                symbol: "triangle-up",
                 color: 'green'
             }
         };
@@ -152,8 +150,7 @@ function utility_plot(temp_Points, k,it) {
             mode: 'markers',
             type: 'scatter',
             marker: {
-                symbol: "diamond",
-                color: 'yellow'
+                color: 'orange'
             }
         };
 
