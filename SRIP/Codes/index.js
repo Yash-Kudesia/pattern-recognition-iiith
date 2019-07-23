@@ -193,6 +193,7 @@ function InitLoad() {
     POINTS = []; //contains points of each classes in subarray
     DataSet = [];    //contains index of all classes loaded for algorithm
     TestPoints = [];  //contains all the user testpoints
+    procedurK=0;
 
     //variable for mst clustering
     stock_Edges = [];
@@ -206,6 +207,7 @@ function InitLoad() {
     key = [];
     parent = [];
     selected = [];  //contains vertices in mst
+    procedure=0;
 }
 function loadRandomTraces() {
     var trace = {};

@@ -1,50 +1,71 @@
-var stock_Edges=[];
+var stock_Edges = [];
 var MSTEdges = [];
 var MSTEdgesSEL = [];
 var MSTEdgesREJ = [];
 var OUTPUT = [];
 var Threshold = 0.4;//optimal
 var state = 1;
-var count_Iteration_mst=0;
-var IC="Iteration Count -: ";
-var IS="Iteration Status -: ";
+var count_Iteration_mst = 0;
+var IC = "Iteration Count -: ";
+var IS = "Iteration Status -: ";
+var procedure = 0;
 
 function MST_startIteration() {
-    console.log("***********MST_startIteration**************");
-    count_Iteration_mst=count_Iteration_mst+1;
-    main_Algorithm();
-    mainIteration_Algorithm();
-    document.getElementById("class_mst").innerHTML = IC+count_Iteration_mst.toString();
-    document.getElementById("status_mst").innerHTML =IS+ "Iterations Started";
-}
-function MST_nextIteration() {
-    console.log("***************MST_nextIteration****************");
-    if (state == 1 && count_Iteration_mst<=limit_loop) {
-        state = mainIteration_Algorithm();
-        var x = 'red';
-        mstplot(OUTPUT, x);
-        count_Iteration_mst=count_Iteration_mst+1;
-        document.getElementById("class_mst").innerHTML = IC+ count_Iteration_mst.toString();
-        document.getElementById("status_mst").innerHTML =IS+ "Iterations Ongoing";
+    if (procedure == 0) {
+        procedure = 1;
+        console.log("***********MST_startIteration**************");
+        count_Iteration_mst = count_Iteration_mst + 1;
+        main_Algorithm();
+        mainIteration_Algorithm();
+        document.getElementById("class_mst").innerHTML = IC + count_Iteration_mst.toString();
+        document.getElementById("status_mst").innerHTML = IS + "Iterations Started";
     }
     else {
-        var x = 'green';
-        mstplot(OUTPUT, x);
-        document.getElementById("status_mst").innerHTML =IS+ "Iterations Completed";
-        console.log("Algorithm completes");
+        console.log("Follow the correct procedure by refering documentation");
+        alert("Wrong Procedure");
+    }
+}
+function MST_nextIteration() {
+    if (procedure == 1) {
+        console.log("***************MST_nextIteration****************");
+        if (state == 1 && count_Iteration_mst <= limit_loop) {
+            state = mainIteration_Algorithm();
+            var x = 'red';
+            mstplot(OUTPUT, x);
+            count_Iteration_mst = count_Iteration_mst + 1;
+            document.getElementById("class_mst").innerHTML = IC + count_Iteration_mst.toString();
+            document.getElementById("status_mst").innerHTML = IS + "Iterations Ongoing";
+        }
+        else {
+            var x = 'green';
+            mstplot(OUTPUT, x);
+            document.getElementById("status_mst").innerHTML = IS + "Iterations Completed";
+            console.log("Algorithm completes");
+
+        }
+    }
+    else {
+        console.log("Follow the correct procedure by refering documentation");
+        alert("Wrong Procedure");
     }
 }
 function MST_finishIteration() {
-    console.log("*****************MST_finishIteration******************");
-    while (state == 1 && count_Iteration_mst<=limit_loop) {
-        state = mainIteration_Algorithm();
-        count_Iteration_mst=count_Iteration_mst+1;
+    if (procedure == 1) {
+        console.log("*****************MST_finishIteration******************");
+        while (state == 1 && count_Iteration_mst <= limit_loop) {
+            state = mainIteration_Algorithm();
+            count_Iteration_mst = count_Iteration_mst + 1;
+        }
+        var x = 'green';
+        mstplot(OUTPUT, x);
+        document.getElementById("class_mst").innerHTML = IC + count_Iteration_mst.toString();
+        document.getElementById("status_mst").innerHTML = IS + "Iterations Completed";
+        console.log("Algorihtm finishes");
     }
-    var x = 'green';
-    mstplot(OUTPUT, x);
-    document.getElementById("class_mst").innerHTML = IC+  count_Iteration_mst.toString();
-    document.getElementById("status_mst").innerHTML =IS+ "Iterations Completed";
-    console.log("Algorihtm finishes");
+    else {
+        console.log("Follow the correct procedure by refering documentation");
+        alert("Wrong Procedure");
+    }
 }
 
 function isCommonUtil(List1, List2) {
@@ -172,7 +193,7 @@ function mainIteration_Algorithm() {
     for (var i = 0; i < MSTEdgesSEL.length / 2; i++) {
         var ind1 = findEdgeUtil(MSTEdges, MSTEdgesSEL[i].source, MSTEdgesSEL[i].destination);
         var ind2 = findEdgeUtil(MSTEdges, MSTEdgesSEL[i].destination, MSTEdgesSEL[i].source);
-        console.log("Indexes for removing->"+ind1+"  "+ind2);
+        console.log("Indexes for removing->" + ind1 + "  " + ind2);
         if (ind1 !== -1) {
             MSTEdges.splice(ind1, 1);
         } else if (ind2 !== -1) {
@@ -199,21 +220,21 @@ function mainIteration_Algorithm() {
     //step-9
     var status = 1; //means iterations can be done
     if (temp_SEL.length == MSTEdgesSEL.length) {
-        var c=0;
+        var c = 0;
         for (var i = 0; i < MSTEdgesSEL.length; i++) {
             var ind1 = findEdgeUtil(temp_SEL, MSTEdgesSEL[i].source, MSTEdgesSEL[i].destination);
             var ind2 = findEdgeUtil(temp_SEL, MSTEdgesSEL[i].destination, MSTEdgesSEL[i].source);
             if (ind1 != -1 | ind2 != -1) {
                 //encounter here when the edge is same
-               c=c+1;
+                c = c + 1;
             }
         }
-        if(c==temp_SEL.length){
+        if (c == temp_SEL.length) {
             //encounter here when all edges are same
-            status=0;
+            status = 0;
         }
     }
-    console.log("Status of iteration->>"+status);
+    console.log("Status of iteration->>" + status);
 
 
     return status;
@@ -236,7 +257,7 @@ function core_Algorithm() {
         var sd = Math.sqrt((t_SUM2 / t_count) - mean * mean);
 
         var coffofVariation = sd / mean;
-        console.log("Cofficient->"+coffofVariation+"  Threshold->>"+Threshold);
+        console.log("Cofficient->" + coffofVariation + "  Threshold->>" + Threshold);
         if (coffofVariation < Threshold) {
             Sum1 = t_SUM1;
             Sum2 = t_SUM2;
@@ -281,15 +302,15 @@ function mstplot(MST, x) {
         showlegend: false
     };
 
-    Plotly.newPlot('graph', data, layout, {scrollZoom: true},{displayModeBar: false},{responsive: true});
+    Plotly.newPlot('graph', data, layout, { scrollZoom: true }, { displayModeBar: false }, { responsive: true });
     //plotting all the points
-    var t_x=[];
-    var t_y=[];
-    for(var i=0;i<TestPoints.length;i++){
+    var t_x = [];
+    var t_y = [];
+    for (var i = 0; i < TestPoints.length; i++) {
         t_x.push(TestPoints[i].x);
         t_y.push(TestPoints[i].y);
     }
-    data=[];
+    data = [];
     var trace = {
         x: t_x,
         y: t_y,

@@ -2,14 +2,14 @@ var limit = 50;
 var Centroids = [];
 var temp_Centroid = [];
 var POINTS = []; //contains points of each classes in subarray
-
+var procedurK = 0;
 
 
 
 function checkConvergence() {
     console.log("check Convergence");
     var state = 0;
-    if (temp_Centroid.length>0) {
+    if (temp_Centroid.length > 0) {
         for (var i = 0; i < Centroids.length; i++) {
             state = 0;
             if (Centroids[i].x == temp_Centroid[i].x) {
@@ -101,7 +101,7 @@ function kMeans(iterationNo) {
 
 }
 
-function utility_plot(temp_Points, k,it) {
+function utility_plot(temp_Points, k, it) {
     var temp_x = [];
     var temp_y = [];
     var data = [];
@@ -165,13 +165,13 @@ function utility_plot(temp_Points, k,it) {
             fixedrange: true
         }
     };
-    if(it==0){
+    if (it == 0) {
         Plotly.newPlot('graph', data, newlayout);
     }
-    else{
+    else {
         Plotly.plot('graph', data, newlayout);
     }
-   
+
 }
 
 function plotIterationpoints() {
@@ -187,7 +187,7 @@ function plotIterationpoints() {
                 temp_Points.push(TestPoints[m]);
             }
         }
-        utility_plot(temp_Points, DataSet[k],k);
+        utility_plot(temp_Points, DataSet[k], k);
     }
 }
 
@@ -202,65 +202,85 @@ function makeobjects(i) {
     //here we have classfied points in class for easy calculations
 }
 function KMeans_startIteration() {
-    console.log("Start iteration for kmeans");
-    //collecting points for calculation
-    for (var i = 0; i < DataSet.length; i++) {
-        makeobjects(DataSet[i]);
-    }
-    //caculate initial centroids for classes
-    var temp_Points = [];
-    for (var i = 0; i < DataSet.length; i++) {
-        for (var j = 0; j < POINTS.length; j++) {
-            if (POINTS[j].indexOfCluster == DataSet[i]) {
-                temp_Points.push(POINTS[j]);
-            }
+    if (procedurK == 0) {
+        procedurK=1;
+        console.log("Start iteration for kmeans");
+        //collecting points for calculation
+        for (var i = 0; i < DataSet.length; i++) {
+            makeobjects(DataSet[i]);
         }
-        var obj = calculateCentroids(temp_Points);
-        temp_Points = [];
-        Centroids.push(obj);
-    }
+        //caculate initial centroids for classes
+        var temp_Points = [];
+        for (var i = 0; i < DataSet.length; i++) {
+            for (var j = 0; j < POINTS.length; j++) {
+                if (POINTS[j].indexOfCluster == DataSet[i]) {
+                    temp_Points.push(POINTS[j]);
+                }
+            }
+            var obj = calculateCentroids(temp_Points);
+            temp_Points = [];
+            Centroids.push(obj);
+        }
 
-    kMeans(0);
-    count_Iteration = count_Iteration + 1;
-    console.log("Iteration->>" + count_Iteration);
-    document.getElementById("class").innerHTML = count_Iteration.toString();
-    document.getElementById("status_kmeans").innerHTML = "Iterations Started";
-    plotIterationpoints();
-}
-function KMeans_nextIteration() {
-    console.log("Next iteration");
-
-    var state = kMeans(count_Iteration);
-    if (state !== 0) {
-        document.getElementById("status_kmeans").innerHTML = "Iterations Completed";
-        console.log("No more iteration possible");
+        kMeans(0);
+        count_Iteration = count_Iteration + 1;
+        console.log("Iteration->>" + count_Iteration);
+        document.getElementById("class").innerHTML = count_Iteration.toString();
+        document.getElementById("status_kmeans").innerHTML = "Iterations Started";
+        plotIterationpoints();
     }
     else {
-        count_Iteration = count_Iteration + 1;
-        document.getElementById("class").innerHTML = count_Iteration.toString();
-        plotIterationpoints();
-        document.getElementById("status_kmeans").innerHTML = count_Iteration + " iteration completed";
+        console.log("Follow the correct procedure by refering documentation");
+        alert("Wrong Procedure");
+    }
+}
+function KMeans_nextIteration() {
+    if (procedurK == 1) {
+        console.log("Next iteration");
+
+        var state = kMeans(count_Iteration);
+        if (state !== 0) {
+            document.getElementById("status_kmeans").innerHTML = "Iterations Completed";
+            console.log("No more iteration possible");
+        }
+        else {
+            count_Iteration = count_Iteration + 1;
+            document.getElementById("class").innerHTML = count_Iteration.toString();
+            plotIterationpoints();
+            document.getElementById("status_kmeans").innerHTML = count_Iteration + " iteration completed";
+        }
+    }
+    else {
+        console.log("Follow the correct procedure by refering documentation");
+        alert("Wrong Procedure");
     }
 }
 function KMeans_finishIteration() {
-    console.log("Finish iteration");
+    if (procedurK == 1) {
+        console.log("Finish iteration");
 
-    var state = 0;
-    if (count_Iteration == -1) {
-        console.log("Process already finished or not started yet");
-    }
-    var count = 0;
-    while (state == 0 && count < limit) {
-        state = kMeans(count_Iteration);
-        count_Iteration = count_Iteration + 1;
-        plotIterationpoints();
-        count = count + 1;
-    }
-    document.getElementById("class").innerHTML = count_Iteration.toString();
-    if (state !== 0) {
-        count_Iteration = -1;
-        console.log("No more iteration possible");
+        var state = 0;
+        if (count_Iteration == -1) {
+            console.log("Process already finished or not started yet");
+        }
+        var count = 0;
+        while (state == 0 && count < limit) {
+            state = kMeans(count_Iteration);
+            count_Iteration = count_Iteration + 1;
+            plotIterationpoints();
+            count = count + 1;
+        }
+        document.getElementById("class").innerHTML = count_Iteration.toString();
+        if (state !== 0) {
+            count_Iteration = -1;
+            console.log("No more iteration possible");
+            document.getElementById("status_kmeans").innerHTML = "Iterations Completed";
+        }
         document.getElementById("status_kmeans").innerHTML = "Iterations Completed";
+
     }
-    document.getElementById("status_kmeans").innerHTML = "Iterations Completed";
+    else {
+        console.log("Follow the correct procedure by refering documentation");
+        alert("Wrong Procedure");
+    }
 }
