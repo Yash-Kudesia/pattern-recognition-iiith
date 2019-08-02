@@ -11,60 +11,74 @@ var IS = "Iteration Status -: ";
 var procedure = 0;
 
 function MST_startIteration() {
-    if (procedure == 0) {
-        procedure = 1;
-        console.log("***********MST_startIteration**************");
-        count_Iteration_mst = count_Iteration_mst + 1;
-        main_Algorithm();
-        mainIteration_Algorithm();
-        document.getElementById("class_mst").innerHTML = IC + count_Iteration_mst.toString();
-        document.getElementById("status_mst").innerHTML = IS + "Iterations Started";
+    if (TestPoints.length != 0) {
+        if (procedure == 0) {
+            procedure = 1;
+            console.log("***********MST_startIteration**************");
+            count_Iteration_mst = count_Iteration_mst + 1;
+            main_Algorithm();
+            mainIteration_Algorithm();
+            document.getElementById("class_mst").innerHTML = IC + count_Iteration_mst.toString();
+            document.getElementById("status_mst").innerHTML = IS + "Iterations Started";
+        }
+        else {
+            console.log("Follow the correct procedure by refering documentation");
+            alert("Wrong Procedure");
+        }
     }
     else {
-        console.log("Follow the correct procedure by refering documentation");
-        alert("Wrong Procedure");
+        alert("Enter some testpoints");
     }
 }
 function MST_nextIteration() {
-    if (procedure == 1) {
-        console.log("***************MST_nextIteration****************");
-        if (state == 1 && count_Iteration_mst <= limit_loop) {
-            state = mainIteration_Algorithm();
-            var x = 'red';
-            mstplot(OUTPUT, x);
-            count_Iteration_mst = count_Iteration_mst + 1;
-            document.getElementById("class_mst").innerHTML = IC + count_Iteration_mst.toString();
-            document.getElementById("status_mst").innerHTML = IS + "Iterations Ongoing";
+    if (TestPoints.length != 0) {
+        if (procedure == 1) {
+            console.log("***************MST_nextIteration****************");
+            if (state == 1 && count_Iteration_mst <= limit_loop) {
+                state = mainIteration_Algorithm();
+                var x = 'red';
+                mstplot(OUTPUT, x);
+                count_Iteration_mst = count_Iteration_mst + 1;
+                document.getElementById("class_mst").innerHTML = IC + count_Iteration_mst.toString();
+                document.getElementById("status_mst").innerHTML = IS + "Iterations Ongoing";
+            }
+            else {
+                var x = 'green';
+                mstplot(OUTPUT, x);
+                document.getElementById("status_mst").innerHTML = IS + "Iterations Completed";
+                console.log("Algorithm completes");
+
+            }
         }
         else {
-            var x = 'green';
-            mstplot(OUTPUT, x);
-            document.getElementById("status_mst").innerHTML = IS + "Iterations Completed";
-            console.log("Algorithm completes");
-
+            console.log("Follow the correct procedure by refering documentation");
+            alert("Wrong Procedure");
         }
-    }
-    else {
-        console.log("Follow the correct procedure by refering documentation");
-        alert("Wrong Procedure");
+
+    } else {
+        alert("Enter some testpoints");
     }
 }
 function MST_finishIteration() {
-    if (procedure == 1) {
-        console.log("*****************MST_finishIteration******************");
-        while (state == 1 && count_Iteration_mst <= limit_loop) {
-            state = mainIteration_Algorithm();
-            count_Iteration_mst = count_Iteration_mst + 1;
+    if (TestPoints.length != 0) {
+        if (procedure == 1) {
+            console.log("*****************MST_finishIteration******************");
+            while (state == 1 && count_Iteration_mst <= limit_loop) {
+                state = mainIteration_Algorithm();
+                count_Iteration_mst = count_Iteration_mst + 1;
+            }
+            var x = 'green';
+            mstplot(OUTPUT, x);
+            document.getElementById("class_mst").innerHTML = IC + count_Iteration_mst.toString();
+            document.getElementById("status_mst").innerHTML = IS + "Iterations Completed";
+            console.log("Algorihtm finishes");
         }
-        var x = 'green';
-        mstplot(OUTPUT, x);
-        document.getElementById("class_mst").innerHTML = IC + count_Iteration_mst.toString();
-        document.getElementById("status_mst").innerHTML = IS + "Iterations Completed";
-        console.log("Algorihtm finishes");
-    }
-    else {
-        console.log("Follow the correct procedure by refering documentation");
-        alert("Wrong Procedure");
+        else {
+            console.log("Follow the correct procedure by refering documentation");
+            alert("Wrong Procedure");
+        }
+    } else {
+        alert("Enter some testpoints");
     }
 }
 
@@ -302,7 +316,7 @@ function mstplot(MST, x) {
         showlegend: false
     };
 
-    Plotly.newPlot('graph', data, layout, { scrollZoom: true }, { displayModeBar: false }, { responsive: true });
+    Plotly.newPlot('graph', data, layout, { responsive: true });
     //plotting all the points
     var t_x = [];
     var t_y = [];
@@ -322,5 +336,5 @@ function mstplot(MST, x) {
     };
 
     data.push(trace);
-    Plotly.plot('graph', data, layout);
+    Plotly.plot('graph', data, layout, { responsive: true });
 }

@@ -17,75 +17,77 @@
 </head>
 
 <body onload="InitLoad()">
-    <div class="wrapper">
-        <div id="graph" style="cursor: default;">
+
+    <div class="hwrapper outerdiv">
+        <div id="graph" style="height: 450px">
 
         </div>
-        <div id="options1">
-            <div class="DivDecor">
-                <div id="algoselectionDiv">
+        <div class="innerdiv">
+            <h3>Data Clustering</h3>
+            <hr>
+            <h4 id="algo_name"></h4>
+            <div style="text-align: center;">
+                <div class="DivDecor" style="margin-left:32%;">
+                    <button class="buttonDecor" onclick="cancelAlgo()" id="cancelAlgo" style="display: none;">Change
+                        Option</button>
+                </div>
+
+                <div class="DivDecor" id="algoselectionDiv">
                     <select id="algoSelect">
                         <option value="Kmeans">K Means</option>
                         <option value="MST">MST</option>
                     </select><br>
                     <button class="buttonDecor" onclick="selectAlgo()">Select the Algorithm</button>
                 </div>
-
-                <button class="buttonDecor" onclick="cancelAlgo()" id="cancelAlgo" style="display: none">Select Other
-                    Algorithm</button>
             </div>
+            <div id="KmeansDiv">
+                <div class="DivDecor">
+                    <select id="traceSelect">
+                        <option value="1">L1</option>
+                        <option value="2">L2</option>
+                        <option value="3">L3</option>
+                        <option value="4">L4</option>
+                    </select>
+                    <button class="buttonDecor" id="load" onclick="loadRandomTraces()">Load</button><br>
+                </div>
+                <div>
+                    <textarea name="coordinates" id="X" readonly></textarea>
+                    <textarea name="coordinates" id="Y" readonly></textarea>
+                </div>
+                <div class="DivDecor">
+                    <button class="buttonDecor" id="start" onclick="KMeans_startIteration()">Start</button>
+                    <button class="buttonDecor" id="next" onclick="KMeans_nextIteration()">Next</button>
+                    <button class="buttonDecor" id="finish" onclick="KMeans_finishIteration()">Finish</button><br><br>
 
+                </div>
+                <div id="class"></div>
+                <div id="status_kmeans"></div>
 
-            <div class="DivDecor" id="Kmeans1Div">
-                <textarea name="coordinates" id="X" readonly></textarea><br>
-                <textarea name="coordinates" id="Y" readonly></textarea>
-                <h4>Load Custom Data Sets</h4><br>
-                <select id="traceSelect">
-                    <option value="1">L1</option>
-                    <option value="2">L2</option>
-                    <option value="3">L3</option>
-                    <option value="4">L4</option>
-                </select>
-                <button class="buttonDecor" id="load" onclick="loadRandomTraces()">Load</button>
             </div>
-            <div class="DivDecor" id="MST1Div">
-                <h4>Assuming completely connected graph</h4><br>
-                <h4>Each Single point is cluster in itself and no two cluster are connected via any edge</h4><br>
-                <textarea name="coordinates" id="X_MST" readonly></textarea><br>
-                <textarea name="coordinates" id="Y_MST" readonly></textarea>
-            </div>
-        </div>
-
-        <div>
-            <div class="DivDecor" id="Kmeans2Div">
-                <button class="buttonDecor" id="start" onclick="KMeans_startIteration()">Start</button>
-                <button class="buttonDecor" id="next" onclick="KMeans_nextIteration()">Next</button>
-                <button class="buttonDecor" id="finish" onclick="KMeans_finishIteration()">Finish</button><br><br>
-                Iteration Number : <div id="class"></div>
-                Iteration status-:<div id="status_kmeans"></div>
-            </div>
-            <div class="DivDecor" id="MST2Div">
-                <button class="buttonDecor" id="start_mst" onclick="MST_startIteration()">Start</button>
-                <button class="buttonDecor" id="next_mst" onclick="MST_nextIteration()">Next</button>
-                <button class="buttonDecor" id="finish_mst" onclick="MST_finishIteration()">Finish</button><br><br>
-               <div id="class_mst"></div>
+            <div class="DivDecor" id="MSTDiv">
+                <div>
+                    <textarea name="coordinates" id="X_MST" readonly></textarea>
+                    <textarea name="coordinates" id="Y_MST" readonly></textarea>
+                </div>
+                <div class="DivDecor">
+                    <button class="buttonDecor" id="start_mst" onclick="MST_startIteration()">Start</button>
+                    <button class="buttonDecor" id="next_mst" onclick="MST_nextIteration()">Next</button>
+                    <button class="buttonDecor" id="finish_mst" onclick="MST_finishIteration()">Finish</button>
+                </div>
+                <div id="class_mst"></div>
                 <div id="status_mst"></div>
+
             </div>
-        </div>
-
-        <div>
             <div class="DivDecor" id="UserDiv" style="display: none;">
-
-                <h4>Mark Points</h4><br>
-                TestPoints<br>
                 <label class="switch">
                     <input id="TestPoints" type="checkbox">
-                    <span class="slider"></span>
+                    <div class="slider"></div>
                 </label>
                 <button class="buttonDecor" id="clear" onclick="removetestPoints()">Remove first point</button>
-            </div>
-        </div>
 
+            </div>
+
+        </div>
     </div>
 </body>
 

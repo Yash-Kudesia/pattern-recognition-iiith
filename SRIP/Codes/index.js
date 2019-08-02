@@ -1,22 +1,22 @@
 function OFFAlgo(str) {
-    document.getElementById(str.concat("1Div")).style.display = "none";
-    document.getElementById(str.concat("2Div")).style.display = "none";
+    document.getElementById(str.concat("Div")).style.display = "none";
 }
 function ONAlgo(str) {
-    document.getElementById(str.concat("1Div")).style.display = "block";
-    document.getElementById(str.concat("2Div")).style.display = "block";
+    document.getElementById(str.concat("Div")).style.display = "block";
 }
 function selectAlgo() {
     InitLoad();
     var temp = document.getElementById("algoSelect").value;
     document.getElementById("cancelAlgo").style.display = "block";
     document.getElementById("algoselectionDiv").style.display = "none";
-
     ONAlgo(temp);
     if (temp == "Kmeans") {
         OFFAlgo("MST");
+        document.getElementById("algo_name").innerHTML="Kmeans Clustering";
+      
     } else {
         OFFAlgo("Kmeans");
+        document.getElementById("algo_name").innerHTML="MST Clustering";
     }
     document.getElementById("UserDiv").style.display = "block";
 }
@@ -38,7 +38,7 @@ function cancelAlgo() {
         },
         showlegend: false
     };
-    Plotly.newPlot('graph', newdata, newlayout).then(attach);
+    Plotly.newPlot('graph', newdata, newlayout,{responsive: true}).then(attach);
 }
 
 
@@ -75,7 +75,7 @@ function plotGraph(newdata) {
         },
         showlegend: false
     };
-    Plotly.plot('graph', newdata, newlayout).then(attach);
+    Plotly.plot('graph', newdata, newlayout,{responsive: true}).then(attach);
 }
 function removetestPoints() {
     if (document.getElementById('TestPoints').checked) {
@@ -183,8 +183,7 @@ function InitLoad() {
         },
         showlegend: false
     };
-    Plotly.plot('graph', data, newlayout).then(attach);
-    document.getElementById("class").innerHTML = "0";
+    Plotly.plot('graph', data, newlayout,{responsive: true}).then(attach);
 
 
     //variable for kmeans
@@ -298,3 +297,9 @@ function calculateCentroids(temp_points_) {
     var obj = new Constructor(centroid_X, centroid_Y);
     return obj;
 }
+window.onresize = function() {
+    Plotly.relayout(myDiv, {
+      width: 0.9 * window.innerWidth,
+      height: 0.9 * window.innerHeight
+    })
+  }
